@@ -45,4 +45,19 @@ pred some_votes {
 		vote.sender in SaneNode
 }
 
-run some_votes for 1
+pred two_votes {
+	some vote0, vote1 : Vote |
+		vote0.sender = vote1.sender && vote0.sender in SaneNode
+}
+
+pred justifaction_link [h_src, h : Hash] {
+	h_src in h.(^h_prev) &&
+   (#{n : Node | some vote : Vote | vote.sender = n && vote.checkpoint = h && vote.source = h_src.h_view}).mul[3] >= (#Node).mul[2]
+}
+
+pred finalized(h : JustifiedNonGenesis)
+{
+	some child : JustifiedNonGenesis | child.h_prev = h && justification_link[h, child]
+}
+
+run two_votes for 2
