@@ -21,4 +21,7 @@ assert acyclic { no d: Dir | d in d.^contents }
 // file system as one root
 assert oneRoot { one d: Dir | no d.parent }
 
-check oneRoot for 5
+// every fsobject is in at most one directory
+assert oneLocation { all o: FSObject  | lone d: Dir | o in d.contents }
+
+check oneLocation for 5
