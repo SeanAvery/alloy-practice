@@ -18,4 +18,7 @@ fact { FSObject in Root.*contents }
 // the contents path is acyclic
 assert acyclic { no d: Dir | d in d.^contents }
 
-check acyclic for 2
+// file system as one root
+assert oneRoot { one d: Dir | no d.parent }
+
+check oneRoot for 5
