@@ -9,3 +9,13 @@ fact { all d: Dir, o: d.contents | o.parent = d }
 
 // all file system objects are either files or directories
 fact { File + Dir = FSObject }
+
+one sig Root extends Dir { } { no parent }
+
+// file system is connected
+fact { FSObject in Root.*contents }
+
+// the contents path is acyclic
+assert acyclic { no d: Dir | d in d.^contents }
+
+check acyclic for 2
